@@ -1,10 +1,17 @@
 const express = require("express");
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./openapi.json");
 const mongoose = require("mongoose");
 
 const app = express();
-const port = 3000;
+// POSTリクエストを処理するためのミドルウェア
+app.use(express.json());
+
+const port = process.env.PORT || 3000;
+
+const openapiRouter = require("./routes/openapi");
+app.use(openapiRouter);
+
+const userRoutes = require("./routes/usersRoutes");
+app.use(userRoutes);
 
 // MongoDBに接続
 mongoose
@@ -18,9 +25,6 @@ mongoose
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);
   });
-
-// Swagger UIの設定
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/hello", (req, res) => {
   res.send("Hello, Express!");

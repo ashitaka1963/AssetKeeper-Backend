@@ -1,0 +1,84 @@
+const User = require("../models/users");
+
+// ユーザー一覧取得
+exports.getUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: "ユーザの取得に失敗しました。" });
+  }
+};
+
+// ユーザー取得（ByUserId）
+exports.getUserByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "ユーザの取得に失敗しました。" });
+  }
+};
+
+// ユーザー取得（ByUserName）
+exports.getUserByUserName = async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const user = await User.find({ userName: userName });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "ユーザの取得に失敗しました。" });
+  }
+};
+
+// ユーザー作成
+exports.createUser = async (req, res) => {
+  try {
+    const { userName, password, email, role, color } = req.body;
+    const newUser = new User({ userName, password, email, role, color });
+    await newUser.save();
+
+    res.json({ message: "ユーザが登録されました。", user: newUser });
+  } catch (error) {
+    res.status(500).json({ error: "ユーザの登録に失敗しました。" });
+  }
+};
+
+// ユーザー更新
+exports.updateUser = async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const updateFields = req.body;
+
+    // ユーザを更新
+    const updatedUser = await User.findOneAndUpdate(
+      { userName },
+      { $set: updateFields },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "ユーザが見つかりません。" });
+    }
+
+    res.json({ message: "ユーザが更新されました。", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ error: "ユーザの更新に失敗しました。" });
+  }
+};
+
+// ユーザー削除
+exports.deleteUser = async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const deletedUser = await User.findOneAndDelete({ userName: userName });
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "ユーザが見つかりません。" });
+    }
+
+    res.json({ message: "ユーザが削除されました。", user: deletedUser });
+  } catch (error) {
+    res.status(500).json({ error: "ユーザの削除に失敗しました。" });
+  }
+};
