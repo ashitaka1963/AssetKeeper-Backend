@@ -13,6 +13,9 @@ app.use(openapiRouter);
 const userRoutes = require("./routes/usersRoutes");
 app.use(userRoutes);
 
+const accountRoutes = require("./routes/accountsRoutes");
+app.use(accountRoutes);
+
 // MongoDBに接続
 mongoose
   .connect("mongodb://127.0.0.1:27017/AssetKeeper", {
