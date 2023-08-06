@@ -21,16 +21,16 @@ exports.getUserByUserId = async (req, res) => {
   }
 };
 
-// ユーザー取得（ByUserName）
-exports.getUserByUserName = async (req, res) => {
-  try {
-    const userName = req.params.userName;
-    const user = await User.find({ userName: userName });
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ error: "ユーザの取得に失敗しました。" });
-  }
-};
+// // ユーザー取得（ByUserName）
+// exports.getUserByUserName = async (req, res) => {
+//   try {
+//     const userName = req.params.userName;
+//     const user = await User.find({ userName: userName });
+//     res.json(user);
+//   } catch (error) {
+//     res.status(500).json({ error: "ユーザの取得に失敗しました。" });
+//   }
+// };
 
 // ユーザー作成
 exports.createUser = async (req, res) => {
@@ -48,12 +48,12 @@ exports.createUser = async (req, res) => {
 // ユーザー更新
 exports.updateUser = async (req, res) => {
   try {
-    const userName = req.params.userName;
+    const userId = req.params.userId;
     const updateFields = req.body;
 
     // ユーザを更新
-    const updatedUser = await User.findOneAndUpdate(
-      { userName },
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
       { $set: updateFields },
       { new: true }
     );
@@ -70,8 +70,8 @@ exports.updateUser = async (req, res) => {
 // ユーザー削除
 exports.deleteUser = async (req, res) => {
   try {
-    const userName = req.params.userName;
-    const deletedUser = await User.findOneAndDelete({ userName: userName });
+    const userId = req.params.userId;
+    const deletedUser = await User.findByIdAndDelete(userId);
 
     if (!deletedUser) {
       return res.status(404).json({ message: "ユーザが見つかりません。" });
