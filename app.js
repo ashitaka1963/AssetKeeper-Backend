@@ -1,9 +1,25 @@
 // TODO:openapiのDescription見直し
 
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 
 const app = express();
+
+// 特定のオリジンを許可する
+const allowedOrigins = ["http://localhost:5173"];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
+
 // POSTリクエストを処理するためのミドルウェア
 app.use(express.json());
 
