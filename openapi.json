@@ -382,6 +382,217 @@
           }
         }
       }
+    },
+
+    "/balances": {
+      "get": {
+        "tags": ["balances"],
+        "summary": "Get balances",
+        "description": "",
+        "operationId": "getBalances",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balances"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balances"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Balance not found"
+          }
+        }
+      }
+    },
+    "/balances/{accountId}": {
+      "get": {
+        "tags": ["balances"],
+        "summary": "Get balances by account id",
+        "description": "",
+        "operationId": "getBalancesByAccountId",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balances"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balances"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "post": {
+        "tags": ["balances"],
+        "summary": "Create balance by account id",
+        "description": "",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "id that need to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balances"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balances"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/balances/{accountId}/{date}": {
+      "patch": {
+        "tags": ["balances"],
+        "summary": "Update balance",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "id that need to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "description": "date that need to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent user in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["balances"],
+        "summary": "Delete balance",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "The id that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "description": "date that need to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -438,6 +649,30 @@
           "ownerId": {
             "type": "string",
             "example": "12345"
+          }
+        },
+        "xml": {
+          "name": "accounts"
+        }
+      },
+      "Balances": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "example": "xxx"
+          },
+          "balanceDate": {
+            "type": "string",
+            "example": ""
+          },
+          "balanceAmount": {
+            "type": "number",
+            "example": 9999
+          },
+          "memo": {
+            "type": "string",
+            "example": "○○のため"
           }
         },
         "xml": {

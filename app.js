@@ -1,3 +1,5 @@
+// TODO:openapiのDescription見直し
+
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -15,6 +17,9 @@ app.use(userRoutes);
 
 const accountRoutes = require("./routes/accountsRoutes");
 app.use(accountRoutes);
+
+const balanceRoutes = require("./routes/balancesRoutes");
+app.use(balanceRoutes);
 
 // MongoDBに接続
 mongoose
