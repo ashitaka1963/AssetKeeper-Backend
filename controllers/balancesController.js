@@ -1,13 +1,27 @@
-// TODO:Get：期間絞り込み
-// TODO:アカウント一覧を取得時に残高履歴も併せて取得する
-
 const Balance = require("../models/balances");
 
 // 残高一覧取得
 exports.getBalance = async (req, res) => {
   try {
-    const accounts = await Balance.find();
-    res.json(accounts);
+    const query = {};
+    const startDate = req.query.startDate; // 開始日
+    const endDate = req.query.endDate; // 終了日
+
+    // 開始日が指定されている場合、条件を追加
+    if (startDate) {
+      query.balanceDate = {
+        $gte: startDate,
+      };
+    }
+
+    // 終了日が指定されている場合、条件を追加
+    if (endDate) {
+      query.balanceDate = query.balanceDate || {}; // 既に条件がある場合、その条件を保持
+      query.balanceDate.$lte = endDate;
+    }
+
+    const balances = await Balance.find(query);
+    res.json(balances);
   } catch (error) {
     res.status(500).json({ error: "残高の取得に失敗しました。" });
   }
@@ -16,9 +30,28 @@ exports.getBalance = async (req, res) => {
 // 残高取得（ByBalanceId）
 exports.getBalanceByBalanceId = async (req, res) => {
   try {
+    const query = {};
     const accountId = req.params.accountId;
-    const account = await Balance.find({ accountId: accountId });
-    res.json(account);
+    query.accountId = accountId;
+
+    const startDate = req.query.startDate; // 開始日
+    const endDate = req.query.endDate; // 終了日
+
+    // 開始日が指定されている場合、条件を追加
+    if (startDate) {
+      query.balanceDate = {
+        $gte: startDate,
+      };
+    }
+
+    // 終了日が指定されている場合、条件を追加
+    if (endDate) {
+      query.balanceDate = query.balanceDate || {}; // 既に条件がある場合、その条件を保持
+      query.balanceDate.$lte = endDate;
+    }
+
+    const balances = await Balance.find(query);
+    res.json(balances);
   } catch (error) {
     res.status(500).json({ error: "残高の取得に失敗しました。" });
   }
@@ -47,7 +80,7 @@ exports.createBalance = async (req, res) => {
 exports.updateBalance = async (req, res) => {
   try {
     const accountId = req.params.accountId;
-    const balanceDate = req.params.date;
+    const balanceDate = req.params.balanceDate;
     const updateFields = req.body;
 
     // 残高を更新
@@ -74,7 +107,7 @@ exports.updateBalance = async (req, res) => {
 exports.deleteBalance = async (req, res) => {
   try {
     const accountId = req.params.accountId;
-    const balanceDate = req.params.date;
+    const balanceDate = req.params.balanceDate;
     const deletedBalance = await Balance.findOneAndDelete({
       accountId,
       balanceDate,

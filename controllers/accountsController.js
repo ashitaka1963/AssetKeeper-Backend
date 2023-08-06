@@ -1,4 +1,5 @@
 const Account = require("../models/accounts");
+const Balance = require("../models/balances");
 
 // アカウント一覧取得
 exports.getAccount = async (req, res) => {
@@ -75,5 +76,53 @@ exports.deleteAccount = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "アカウントの削除に失敗しました。" });
+  }
+};
+
+// アカウントと残高履歴取得
+exports.getAccountsWithBalances = async (req, res) => {
+  try {
+    const accounts = await Account.find();
+    // console.log(accounts);
+    let resData = [];
+
+    for (const account of accounts) {
+      const query = {};
+      const accountId = account._id;
+      query.accountId = accountId;
+
+      const startDate = req.query.startDate; // 開始日
+      const endDate = req.query.endDate; // 終了日
+
+      // 開始日が指定されている場合、条件を追加
+      if (startDate) {
+        query.balanceDate = {
+          $gte: startDate,
+        };
+      }
+
+      // 終了日が指定されている場合、条件を追加
+      if (endDate) {
+        query.balanceDate = query.balanceDate || {}; // 既に条件がある場合、その条件を保持
+        query.balanceDate.$lte = endDate;
+      }
+
+      const balances = await Balance.find(query);
+      const tempAccountWithBalances = {
+        _id: account._id,
+        accountName: account.accountName,
+        accountType: account.accountType,
+        ownerId: account.ownerId,
+        createdAt: account.createdAt,
+        updatedAt: account.updatedAt,
+        balances: balances,
+      };
+
+      resData.push(tempAccountWithBalances);
+    }
+
+    res.json(resData);
+  } catch (error) {
+    res.status(500).json({ error: "アカウントの取得に失敗しました。" });
   }
 };

@@ -4,7 +4,7 @@ const balanceSchema = new mongoose.Schema(
   {
     // _id: Number,
     accountId: String,
-    balanceDate: String,
+    balanceDate: Date,
     balanceAmount: Number,
     memo: String,
   },

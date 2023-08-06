@@ -383,6 +383,59 @@
         }
       }
     },
+    "/accounts-with-balances": {
+      "get": {
+        "tags": ["accounts"],
+        "summary": "Get accounts with balance history",
+        "description": "",
+        "operationId": "getAccountsWithBalances",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2023-01-01"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2023-12-31"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
 
     "/balances": {
       "get": {
@@ -390,7 +443,26 @@
         "summary": "Get balances",
         "description": "",
         "operationId": "getBalances",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -425,6 +497,25 @@
             "in": "path",
             "description": "",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -524,7 +615,7 @@
             }
           },
           {
-            "name": "date",
+            "name": "balanceDate",
             "in": "path",
             "description": "date that need to be deleted",
             "required": true,
@@ -575,7 +666,7 @@
             }
           },
           {
-            "name": "date",
+            "name": "balanceDate",
             "in": "path",
             "description": "date that need to be deleted",
             "required": true,
@@ -663,8 +754,8 @@
             "example": "xxx"
           },
           "balanceDate": {
-            "type": "string",
-            "example": ""
+            "type": "object",
+            "example": "2023-08-01"
           },
           "balanceAmount": {
             "type": "number",

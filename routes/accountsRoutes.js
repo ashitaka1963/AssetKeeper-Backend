@@ -9,4 +9,9 @@ router.post("/accounts", accountController.createAccount);
 router.patch("/accounts/:accountId", accountController.updateAccount);
 router.delete("/accounts/:accountId", accountController.deleteAccount);
 
+router.get(
+  "/accounts-with-balances",
+  accountController.getAccountsWithBalances
+);
+
 module.exports = router;
