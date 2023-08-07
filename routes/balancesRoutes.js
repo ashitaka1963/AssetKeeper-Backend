@@ -4,9 +4,9 @@ const balanceController = require("../controllers/balancesController");
 
 // ユーザー作成のルートハンドラー
 router.get("/balances", balanceController.getBalance);
-router.get("/balances/:accountId", balanceController.getBalanceByBalanceId);
-router.post("/balances/:accountId", balanceController.createBalance);
-router.patch("/balances/:accountId/:date", balanceController.updateBalance);
-router.delete("/balances/:accountId/:date", balanceController.deleteBalance);
+router.get("/balances/:accountId", balanceController.getBalanceByAccountId);
+router.post("/balances", balanceController.createBalance);
+router.patch("/balances/:balanceId", balanceController.updateBalance);
+router.delete("/balances/:balanceId", balanceController.deleteBalance);
 
 module.exports = router;

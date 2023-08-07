@@ -108,6 +108,14 @@ exports.getAccountsWithBalances = async (req, res) => {
       }
 
       const balances = await Balance.find(query);
+      let latestBalance = 0;
+      let latestDate = null;
+      if (balances.length != 0) {
+        balances.sort((a, b) => b.balanceDate - a.balanceDate);
+        latestBalance = balances[0].balanceAmount;
+        latestDate = balances[0].balanceDate;
+      }
+
       const tempAccountWithBalances = {
         _id: account._id,
         accountName: account.accountName,
@@ -115,7 +123,11 @@ exports.getAccountsWithBalances = async (req, res) => {
         ownerId: account.ownerId,
         createdAt: account.createdAt,
         updatedAt: account.updatedAt,
-        balances: balances,
+        balances: {
+          latestBalance: latestBalance,
+          latestDate: latestDate,
+          history: balances,
+        },
       };
 
       resData.push(tempAccountWithBalances);

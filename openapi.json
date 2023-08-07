@@ -483,6 +483,50 @@
             "description": "Balance not found"
           }
         }
+      },
+      "post": {
+        "tags": ["balances"],
+        "summary": "Create balance",
+        "description": "",
+        "operationId": "createUser",
+        "parameters": [],
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Balances"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balances"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balances"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/balances/{accountId}": {
@@ -541,64 +585,10 @@
             "description": "User not found"
           }
         }
-      },
-      "post": {
-        "tags": ["balances"],
-        "summary": "Create balance by account id",
-        "description": "",
-        "operationId": "createUser",
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "description": "id that need to be deleted",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Created user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Balances"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/Balances"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Balances"
-              }
-            }
-          }
-        },
-        "responses": {
-          "default": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Balances"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/Balances"
-                }
-              }
-            }
-          }
-        }
       }
     },
 
-    "/balances/{accountId}/{date}": {
+    "/balances/{balanceId}": {
       "patch": {
         "tags": ["balances"],
         "summary": "Update balance",
@@ -606,18 +596,9 @@
         "operationId": "updateUser",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "balanceId",
             "in": "path",
             "description": "id that need to be deleted",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "balanceDate",
-            "in": "path",
-            "description": "date that need to be deleted",
             "required": true,
             "schema": {
               "type": "string"
@@ -657,18 +638,9 @@
         "operationId": "deleteUser",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "balanceId",
             "in": "path",
             "description": "The id that needs to be deleted",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "balanceDate",
-            "in": "path",
-            "description": "date that need to be deleted",
             "required": true,
             "schema": {
               "type": "string"

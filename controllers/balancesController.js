@@ -27,8 +27,8 @@ exports.getBalance = async (req, res) => {
   }
 };
 
-// 残高取得（ByBalanceId）
-exports.getBalanceByBalanceId = async (req, res) => {
+// 残高一覧取得（ByAccountId）
+exports.getBalanceByAccountId = async (req, res) => {
   try {
     const query = {};
     const accountId = req.params.accountId;
@@ -60,8 +60,7 @@ exports.getBalanceByBalanceId = async (req, res) => {
 // 残高作成
 exports.createBalance = async (req, res) => {
   try {
-    const accountId = req.params.accountId;
-    const { balanceDate, balanceAmount, memo } = req.body;
+    const { accountId, balanceDate, balanceAmount, memo } = req.body;
     const newBalance = new Balance({
       accountId,
       balanceDate,
@@ -79,16 +78,19 @@ exports.createBalance = async (req, res) => {
 // 残高更新
 exports.updateBalance = async (req, res) => {
   try {
-    const accountId = req.params.accountId;
-    const balanceDate = req.params.balanceDate;
+    const balanceId = req.params.balanceId;
     const updateFields = req.body;
 
+    console.log(balanceId, updateFields);
+
     // 残高を更新
-    const updatedBalance = await Balance.findOneAndUpdate(
-      { accountId, balanceDate },
+    const updatedBalance = await Balance.findByIdAndUpdate(
+      balanceId,
       { $set: updateFields },
       { new: true }
     );
+
+    console.log(updatedBalance);
 
     if (!updatedBalance) {
       return res.status(404).json({ message: "残高が見つかりません。" });
@@ -106,12 +108,8 @@ exports.updateBalance = async (req, res) => {
 // 残高削除
 exports.deleteBalance = async (req, res) => {
   try {
-    const accountId = req.params.accountId;
-    const balanceDate = req.params.balanceDate;
-    const deletedBalance = await Balance.findOneAndDelete({
-      accountId,
-      balanceDate,
-    });
+    const balanceId = req.params.balanceId;
+    const deletedBalance = await Balance.findByIdAndDelete(balanceId);
 
     if (!deletedBalance) {
       return res.status(404).json({ message: "残高が見つかりません。" });
