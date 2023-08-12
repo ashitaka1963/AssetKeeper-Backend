@@ -21,6 +21,7 @@ exports.getBalance = async (req, res) => {
     }
 
     const balances = await Balance.find(query);
+    balances.sort((a, b) => b.balanceDate - a.balanceDate);
     res.json(balances);
   } catch (error) {
     res.status(500).json({ error: "残高の取得に失敗しました。" });
@@ -51,6 +52,7 @@ exports.getBalanceByAccountId = async (req, res) => {
     }
 
     const balances = await Balance.find(query);
+    balances.sort((a, b) => b.balanceDate - a.balanceDate);
     res.json(balances);
   } catch (error) {
     res.status(500).json({ error: "残高の取得に失敗しました。" });
